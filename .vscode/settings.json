@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "*.css": "css",
+    "print.h": "c"
+  },
+}
