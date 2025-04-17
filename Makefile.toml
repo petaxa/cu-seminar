@@ -1,5 +1,5 @@
 [tasks.gcc-build]
-description = "Build hoge"
+description = "Build C code with gcc according to my rules."
 command = "sh"
 args=["_makers_script/build-gcc.sh", "${@}"]
 
