@@ -3,6 +3,7 @@
 description = "Build C code with gcc according to my rules."
 command = "sh"
 args=["_makers_script/build-gcc.sh", "${@}"]
+
 [tasks.run-c]
 description = "Run sample-codes exe file made by c code"
 command = "sh"
@@ -10,13 +11,13 @@ args=["-c", "sample-codes/exe/${@}.exe"]
 
 # オブジェクトファイル作成
 [tasks.gc-print]
-description = "gcc-compile-print. Compile shared/print.c to object file."
+description = "alias for gcc-compile-print. Compile shared/print.c to object file."
 command = "gcc"
 args=["-c","sample-codes/shared/print.c", "-o", "sample-codes/shared/obj/print.o"]
 
 # 実行ファイル作成
 [tasks.gb-bubble]
-description = "gcc-build-bubble. Build bubble.c"
+description = "alias for gcc-build-bubble. Build bubble.c"
 command = "gcc"
 args=["sample-codes/bubble.c", "sample-codes/shared/obj/print.o", "-o", "sample-codes/exe/bubble.exe"]
 dependencies = ["gc-print"]
