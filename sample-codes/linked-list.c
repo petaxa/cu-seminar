@@ -8,7 +8,6 @@ typedef struct cell
 } Cell;
 
 /**
- *
  * @brief リストに値を指定されたメモリ領域に挿入する。挿入前に指定されたメモリ領域に存在したセルは挿入セルの next となる。
  *
  * @param ponter 挿入セルの位置のメモリ領域を値に持つメモリのポインタ
@@ -31,11 +30,9 @@ void insert_cell(Cell **ponter, int value)
 }
 
 /**
- *
  * @brief リストの値を削除する
  *
  * @param pointer 削除セルの位置のメモリ領域を値に持つメモリのポインタ
- * @param value
  */
 void delete_cell(Cell **pointer)
 {
@@ -46,7 +43,6 @@ void delete_cell(Cell **pointer)
 }
 
 /**
- *
  * @brief リストの内容をすべて表示
  *
  * @param head リストの先頭のポインタ
@@ -70,7 +66,6 @@ void print_list(Cell *head)
 }
 
 /**
- *
  * @brief リストのメモリをすべて開放
  *
  * @param head リストの先頭のポインタ
