@@ -1,27 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct cell
+typedef struct cell
 {
   int value;
   struct cell *next;
-};
+} Cell;
 
 /**
  *
  * @brief リストに値を指定されたメモリ領域に挿入する。挿入前に指定されたメモリ領域に存在したセルは挿入セルの next となる。
  *
- * @param ponter 挿入位置のメモリ位置
+ * @param ponter 挿入セルの位置のメモリ領域を値に持つメモリのポインタ
  * @param value 挿入する値
  */
-void insert_cell(struct cell **ponter, int value)
+void insert_cell(Cell **ponter, int value)
 {
-  struct cell *new_cell = malloc(sizeof *new_cell);
+  Cell *new_cell = malloc(sizeof *new_cell);
   if (!new_cell)
     return;
 
+  // 挿入セルに値を格納
   new_cell->value = value;
+
+  // 挿入セルの次のセルは挿入前に挿入位置にいたセルとする
   new_cell->next = *ponter;
+
+  // 挿入位置に存在するセルを挿入セルに書き換え
   *ponter = new_cell;
 }
 
@@ -29,12 +34,14 @@ void insert_cell(struct cell **ponter, int value)
  *
  * @brief リストの値を削除する
  *
- * @param pointer 削除するセルのポインタ
+ * @param pointer 削除セルの位置のメモリ領域を値に持つメモリのポインタ
  * @param value
  */
-void delete_cell(struct cell **pointer)
+void delete_cell(Cell **pointer)
 {
-  struct cell *target = *pointer;
+  Cell *target = *pointer;
+
+  // 削除位置に存在するセルを削除セルの次のセルに書き換え
   *pointer = target->next;
 }
 
@@ -44,7 +51,7 @@ void delete_cell(struct cell **pointer)
  *
  * @param head リストの先頭のポインタ
  */
-void print_list(struct cell *head)
+void print_list(Cell *head)
 {
 
   if (head == NULL)
@@ -53,7 +60,7 @@ void print_list(struct cell *head)
     return;
   }
 
-  struct cell *temp = head;
+  Cell *temp = head;
   while (temp != NULL)
   {
     printf("%d -> ", temp->value);
@@ -68,9 +75,9 @@ void print_list(struct cell *head)
  *
  * @param head リストの先頭のポインタ
  */
-void free_list(struct cell *head)
+void free_list(Cell *head)
 {
-  struct cell *temp;
+  Cell *temp;
 
   while (head != NULL)
   {
@@ -82,7 +89,7 @@ void free_list(struct cell *head)
 
 int main()
 {
-  struct cell *head = NULL;
+  Cell *head = NULL;
 
   // リストに値を追加
   insert_cell(&head, 10);
