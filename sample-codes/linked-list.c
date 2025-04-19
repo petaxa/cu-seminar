@@ -87,17 +87,15 @@ int main()
   Cell *head = NULL;
 
   // リストに値を追加
+  puts("リストに値を追加");
   insert_cell(&head, 10);
   insert_cell(&head->next, 20);
   insert_cell(&head->next->next, 30);
   insert_cell(&head->next->next->next, 40);
-
-  // リストの表示
-  printf("リストの内容:\n");
   print_list(head);
 
   // リストから値を削除
-  printf("\n30を削除します:\n");
+  puts("リストから 3 番目の値を削除");
   delete_cell(&head->next->next);
   print_list(head);
 

@@ -201,12 +201,18 @@ size_t list_size(const Node *head)
  */
 void print_list(const Node *head)
 {
-  for (Node *current = head->next; current != head; current = current->next)
-    printf("%d ", current->value);
+  Node *current = head->next;
+  while (current != head)
+  {
+    printf("%d -> ", current->value);
+    current = current->next;
+  }
+  printf("%d(head)", current->next->value);
   puts("");
 }
 
-void print_size(const Node *head){
+void print_size(const Node *head)
+{
   printf("size = %zu\n", list_size(head));
 }
 
