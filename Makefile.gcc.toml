@@ -21,3 +21,8 @@ description = "alias for gcc-build-bubble. Build bubble.c"
 command = "gcc"
 args=["sample-codes/bubble.c", "sample-codes/shared/obj/print.o", "-o", "sample-codes/exe/bubble.exe"]
 dependencies = ["gc-print"]
+
+[tasks.gb-linked-list]
+description = "alias for gcc-build-linked-list. Build linked-list.c"
+command = "gcc"
+args=["sample-codes/linked-list.c", "-o", "sample-codes/exe/linked-list.exe"]
