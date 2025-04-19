@@ -26,3 +26,8 @@ dependencies = ["gc-print"]
 description = "alias for gcc-build-linked-list. Build linked-list.c"
 command = "gcc"
 args=["sample-codes/linked-list.c", "-o", "sample-codes/exe/linked-list.exe"]
+
+[tasks.gb-cdl-list]
+description = "alias for gcc-build-circular-doubly-linked-list. Build cdl-list.c"
+command = "gcc"
+args=["sample-codes/cdl-list.c", "-o", "sample-codes/exe/cdl-list.exe"]
