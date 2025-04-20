@@ -1,0 +1,4 @@
+[tasks.pnpm]
+description = "Run pnpm script in slide dir"
+cwd="./slide"
+script = ["pnpm %*"]
