@@ -6,8 +6,8 @@ args=["_makers_script/build-gcc.sh", "${@}"]
 
 [tasks.run-c]
 description = "Run sample-codes exe file made by c code"
-command = "sh"
-args=["-c", "sample-codes/exe/${@}.exe"]
+cwd="sample-codes/exe/"
+script = ["%*.exe"]
 
 # オブジェクトファイル作成
 [tasks.gc-print]
