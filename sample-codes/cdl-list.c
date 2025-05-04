@@ -207,13 +207,19 @@ void print_list(const Node *head)
     printf("%d -> ", current->value);
     current = current->next;
   }
-  printf("%d(head)", current->next->value);
+  printf("%d(head)", current->value);
   puts("");
 }
 
 void print_size(const Node *head)
 {
   printf("size = %zu\n", list_size(head));
+}
+
+void print_list_size(const Node *head)
+{
+  print_list(head);
+  print_size(head);
 }
 
 int main(void)
@@ -224,34 +230,23 @@ int main(void)
 
   // リスト末尾に追加
   puts("リスト末尾に追加");
-  push_tail(head, 1);
-  print_list(head);
-
-  push_tail(head, 2);
-  print_list(head);
-
-  push_tail(head, 3);
-  print_list(head);
-  print_size(head);
-
-  // リスト先頭に追加
-  puts("リスト先頭に追加");
-  push_head(head, 0);
-  print_list(head);
-  print_size(head);
+  insert_before_benchmark(head, 1);
+  insert_before_benchmark(head, 2);
+  insert_before_benchmark(head, 3);
+  print_list_size(head);
 
   // リスト 2 番目に追加
-  puts("リスト 2 番目に追加");
+  puts("リストに追加");
   Node *second = head->next->next;
-  insert_before_benchmark(second, 99);
-  print_list(head);
-  print_size(head);
+  // 2 番目のセルの後ろに追加
+  insert_after_benchmark(second, 99);
+  print_list_size(head);
 
-  // リスト末尾を削除
-  puts("リスト末尾を削除");
-  pop_tail(head);
-  print_list(head);
-  print_size(head);
+  // リスト 4 番目を削除
+  puts("リスト 4 番目を削除");
+  Node *fourth = head->next->next->next->next;
+  remove_node(fourth);
+  print_list_size(head);
 
   // リストを開放
   free_dlist(head);
