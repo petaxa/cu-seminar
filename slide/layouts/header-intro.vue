@@ -35,9 +35,9 @@ const props = defineProps({
     <div class="col-content" :class="props.class">
       <slot name="content" />
     </div>
-    <div class="col-bottom" :class="props.class">
+    <!-- <div class="col-bottom" :class="props.class">
       <slot name="bottom" />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -45,19 +45,20 @@ const props = defineProps({
 .header-intro {
   display: grid;
   grid-template-rows: auto 1fr 0;
+  grid-template-columns: auto;
 }
 
 .col-header {
-  grid-area: 1 / 1 / 2 / 3;
+  grid-area: 1 / 1 / 1 / 1;
 }
 
 .col-content {
-  grid-area: 2 / 1 / 3 / 2;
+  grid-area: 2 / 1 / 2 / 1;
   place-self: center;
 }
 
 .col-bottom {
   align-self: end;
-  grid-area: 3 / 1 / 3 / 3;
+  grid-area: 3 / 1 / 2 / 1;
 }
 </style>

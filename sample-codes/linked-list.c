@@ -40,6 +40,9 @@ void delete_cell(Cell **pointer)
 
   // 削除位置に存在するセルを削除セルの次のセルに書き換え
   *pointer = target->next;
+
+  // 削除セルのメモリ空間を開放
+  free(pointer);
 }
 
 /**
