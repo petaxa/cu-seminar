@@ -31,3 +31,20 @@ args=["sample-codes/linked-list.c", "-o", "sample-codes/exe/linked-list.exe"]
 description = "alias for gcc-build-circular-doubly-linked-list. Build cdl-list.c"
 command = "gcc"
 args=["sample-codes/cdl-list.c", "-o", "sample-codes/exe/cdl-list.exe"]
+
+[tasks.gb-insertion-sort]
+description = "alias for gcc-build-insertion-sort. Build insertion-sort.c"
+command = "gcc"
+args=["sample-codes/insertion-sort.c", "-o", "sample-codes/exe/insertion-sort.exe"]
+
+[tasks.gb-practice-1]
+description = "alias for gcc-build-practice-1. Build practice-1.c"
+command = "gcc"
+args=["sample-codes/practices/practice-1.c", "sample-codes/shared/obj/print.o", "-o", "sample-codes/exe/practice-1.exe"]
+dependencies = ["gc-print"]
+
+[tasks.gb-practice-2]
+description = "alias for gcc-build-practice-2. Build practice-2.c"
+command = "gcc"
+args=["sample-codes/practices/practice-2.c", "sample-codes/shared/obj/print.o", "-o", "sample-codes/exe/practice-2.exe"]
+dependencies = ["gc-print"]
