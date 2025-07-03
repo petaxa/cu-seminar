@@ -34,9 +34,9 @@ checksum = "7c02d123df017efcdfbd739ef81735b36c5ba83ec3c59c80a9d7ecc718f92e50"
 
 [[package]]
 name = "ast_node"
-version = "3.0.1"
+version = "3.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c6ea666cbca3830383d6ce836593e88ade6f61b12c6066c09dc1257c3079a5b6"
+checksum = "337b95505078e10730624c8d182b8564c745ba4b2ce398e626a4df3f8c9e6899"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -127,9 +127,9 @@ checksum = "5c297a1c74b71ae29df00c3e22dd9534821d60eb9af5a0192823fa2acea70c2a"
 
 [[package]]
 name = "deno_ast"
-version = "0.48.0"
+version = "0.48.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0f883bd8eae4dfc8019d925ec3dd04b634b6af9346a5168acc259d55f5f5021d"
+checksum = "0ced09fdb8884e29716cc0691e8510f9c655762bbb9da3111dacc0a2ef6e8960"
 dependencies = [
  "capacity_builder",
  "deno_error",
