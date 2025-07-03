@@ -10,39 +10,25 @@ use std::collections::VecDeque;
 #[serde(rename_all = "PascalCase", tag = "type")]
 pub enum AstNode {
     IfStatement {
-        span: Span,
         test: Box<AstNode>,
         consequent: Box<AstNode>,
         alternate: Option<Box<AstNode>>,
     },
     BlockStatement {
-        span: Span,
-        ctxt: u32,
         stmts: Vec<AstNode>,
     },
     ExpressionStatement {
-        span: Span,
         expression: Box<AstNode>,
     },
     CallExpression {
-        span: Span,
-        ctxt: u32,
         callee: Box<AstNode>,
         arguments: Vec<AstNode>,
         type_arguments: Option<()>,
     },
     Identifier {
-        span: Span,
-        ctxt: u32,
         value: String,
         optional: bool,
     },
-}
-
-#[derive(Debug, Deserialize, PartialEq)]
-pub struct Span {
-    start: u32,
-    end: u32,
 }
 
 pub fn parse(source_text: &'static str) -> Vec<AstNode> {
@@ -126,24 +112,14 @@ mod tests {
         let source_text = "if(condition) { foo(); }";
         let asts = parse(source_text);
         let expected = AstNode::IfStatement {
-            span: Span { start: 1, end: 25 },
             test: Box::new(AstNode::Identifier {
-                span: Span { start: 4, end: 13 },
-                ctxt: 0,
                 value: "condition".to_string(),
                 optional: false,
             }),
             consequent: Box::new(AstNode::BlockStatement {
-                span: Span { start: 15, end: 25 },
-                ctxt: 0,
                 stmts: vec![AstNode::ExpressionStatement {
-                    span: Span { start: 17, end: 23 },
                     expression: Box::new(AstNode::CallExpression {
-                        span: Span { start: 17, end: 22 },
-                        ctxt: 0,
                         callee: Box::new(AstNode::Identifier {
-                            span: Span { start: 17, end: 20 },
-                            ctxt: 0,
                             value: "foo".to_string(),
                             optional: false,
                         }),

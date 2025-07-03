@@ -21,9 +21,7 @@ pub(super) fn process_node(node: AstNode, queue: &mut VecDeque<QueueItem>) {
             }
         }
 
-        AstNode::BlockStatement { ctxt, stmts, .. } => {
-            println!("touch ctxt: {}", ctxt);
-
+        AstNode::BlockStatement { stmts, .. } => {
             println!("touch stmts");
             queue.push_back(QueueItem::Multiple(stmts));
         }
@@ -36,12 +34,9 @@ pub(super) fn process_node(node: AstNode, queue: &mut VecDeque<QueueItem>) {
         AstNode::CallExpression {
             callee,
             arguments,
-            ctxt,
             type_arguments,
             ..
         } => {
-            println!("touch ctxt: {}", ctxt);
-
             println!("touch callee");
             queue.push_back(QueueItem::Single(callee));
 
@@ -52,12 +47,8 @@ pub(super) fn process_node(node: AstNode, queue: &mut VecDeque<QueueItem>) {
         }
 
         AstNode::Identifier {
-            ctxt,
-            value,
-            optional,
-            ..
+            value, optional, ..
         } => {
-            println!("touch ctxt: {}", ctxt);
             println!("touch value: {}", value);
             println!("touch optional: {}", optional);
         }

@@ -1,4 +1,4 @@
-use deno_ast::{parse_script, MediaType, ParseParams, ParsedSource, SourceTextInfo};
+use deno_ast::{MediaType, ParseParams, ParsedSource, SourceTextInfo, parse_script};
 
 pub(crate) fn parse_to_deno_ast(source_text: &'static str) -> ParsedSource {
     // deno_lint で AST にパース
