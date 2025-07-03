@@ -3,10 +3,10 @@ mod parse;
 use crate::utils::parse_to_deno_ast;
 use bfs::process_node;
 use parse::parse_to_pure_ast;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
 
-#[derive(Debug, Deserialize, PartialEq)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "PascalCase", tag = "type")]
 pub enum AstNode {
     IfStatement {
