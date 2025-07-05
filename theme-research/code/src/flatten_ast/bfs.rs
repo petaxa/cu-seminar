@@ -1,4 +1,4 @@
-use super::{Ast};
+use super::Ast;
 use std::collections::VecDeque;
 
 const ROOT_NODE_INDEX: usize = 1;
@@ -7,7 +7,14 @@ const NODE_ELE_COUNT: usize = 4;
 const CHILD_COORD: usize = 1;
 const NEXT_COORD: usize = 2;
 
-pub(super) fn process_node(ast: Ast) {
+pub fn bfs(root: Vec<Ast>) {
+    for (index, node) in root.into_iter().enumerate() {
+        println!("touch node[{}]", index);
+        process_node(node);
+    }
+}
+
+fn process_node(ast: Ast) {
     // nodes をたどる → type の String を見る → 同 index の prop を見る → props の中身を一個ずつキューに入れる → キューの先頭から処理
     let nodes = ast.nodes;
     let props = ast.properties;

@@ -1,7 +1,14 @@
 use super::{Ast, AstProps};
 use crate::pure_ast;
 
-pub(super) fn parse_to_flatten_ast(_pure_ast: Vec<pure_ast::AstNode>) -> Vec<Ast> {
+pub fn parse(source_text: &'static str) -> Vec<Ast> {
+    let pure_ast = pure_ast::parse(source_text);
+    let asts = parse_to_flatten_ast(pure_ast);
+
+    return asts;
+}
+
+fn parse_to_flatten_ast(_pure_ast: Vec<pure_ast::AstNode>) -> Vec<Ast> {
     // NOTE: とてつもない仮実装 本来はパーサを記述するが、現在はパース済みの固定値を返す
     // 手動でパースすることは可能なので、時間的余裕を見て自動化するかを判断する
     let expected = Ast {
