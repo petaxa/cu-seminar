@@ -7,8 +7,8 @@ const NODE_ELE_COUNT: usize = 4;
 const CHILD_COORD: usize = 1;
 const NEXT_COORD: usize = 2;
 
-pub fn bfs(root: Vec<Ast>) {
-    for (index, node) in root.into_iter().enumerate() {
+pub fn bfs(ast: Vec<Ast>) {
+    for (index, node) in ast.into_iter().enumerate() {
         println!("touch node[{}]", index);
         process_node(node);
     }
