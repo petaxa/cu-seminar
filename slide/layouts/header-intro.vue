@@ -28,7 +28,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="slidev-layout header-intro w-full h-full" :class="layoutClass">
+  <div class="slidev-layout header-intro w-full h-full" :class="props.layoutClass">
     <div class="col-header">
       <slot />
     </div>
