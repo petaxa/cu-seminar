@@ -1,7 +1,7 @@
 use crate::{flatten_ast, pure_ast};
 use std::time::{Duration, Instant};
 
-pub fn bfs_pure_ast(asts: &Vec<pure_ast::AstNode>) -> Duration {
+pub fn bfs_pure_ast(asts: Vec<pure_ast::AstNode>) -> Duration {
     let log_queue: &mut Vec<String> = &mut vec![];
     let pure_fnc_time = Instant::now();
     pure_ast::bfs(pure_ast::QueueItem::Multiple(asts), log_queue);
@@ -10,7 +10,7 @@ pub fn bfs_pure_ast(asts: &Vec<pure_ast::AstNode>) -> Duration {
     return elapsed;
 }
 
-pub fn bfs_flatten_ast(ast: &Vec<flatten_ast::Ast>) -> Duration {
+pub fn bfs_flatten_ast(ast: Vec<flatten_ast::Ast>) -> Duration {
     let log_queue: &mut Vec<String> = &mut vec![];
     let pure_fnc_time = Instant::now();
     flatten_ast::bfs(ast, log_queue);

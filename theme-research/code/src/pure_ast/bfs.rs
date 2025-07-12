@@ -1,9 +1,9 @@
 use super::ast_struct::AstNode;
 use std::collections::VecDeque;
 
-pub enum QueueItem<'a> {
-    Single(&'a AstNode),
-    Multiple(&'a Vec<AstNode>),
+pub enum QueueItem {
+    Single(Box<AstNode>),
+    Multiple(Vec<AstNode>),
 }
 
 pub fn bfs(root: QueueItem, log_queue: &mut Vec<String>) {
@@ -13,7 +13,7 @@ pub fn bfs(root: QueueItem, log_queue: &mut Vec<String>) {
     while let Some(item) = queue.pop_front() {
         match item {
             QueueItem::Single(node) => {
-                process_node(node, &mut queue, log_queue);
+                process_node(*node, &mut queue, log_queue);
             }
             QueueItem::Multiple(nodes) => {
                 for (index, node) in nodes.into_iter().enumerate() {
@@ -25,7 +25,7 @@ pub fn bfs(root: QueueItem, log_queue: &mut Vec<String>) {
     }
 }
 
-fn process_node<'a>(node: &'a AstNode, queue: &mut VecDeque<QueueItem<'a>>, log_queue: &mut Vec<String>) {
+fn process_node(node: AstNode, queue: &mut VecDeque<QueueItem>, log_queue: &mut Vec<String>) {
     match node {
         AstNode::IfStatement {
             test,
@@ -89,7 +89,7 @@ mod tests {
         let source_text = "if(condition) { foo(); }";
         let asts: Vec<AstNode> = parse(source_text);
         let mut log_queue = Vec::new();
-        bfs(QueueItem::Multiple(&asts), &mut log_queue);
+        bfs(QueueItem::Multiple(asts), &mut log_queue);
 
         let expected = vec![
             "touch node[0]",

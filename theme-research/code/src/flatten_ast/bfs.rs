@@ -7,17 +7,17 @@ const NODE_ELE_COUNT: usize = 4;
 const CHILD_COORD: usize = 1;
 const NEXT_COORD: usize = 2;
 
-pub fn bfs(ast: &Vec<Ast>, log_queue: &mut Vec<String>) {
+pub fn bfs(ast: Vec<Ast>, log_queue: &mut Vec<String>) {
     for (index, node) in ast.into_iter().enumerate() {
         log_queue.push(format!("touch node[{}]", index));
         process_node(node, log_queue);
     }
 }
 
-fn process_node(ast: &Ast, log_queue: &mut Vec<String>) {
+fn process_node(ast: Ast, log_queue: &mut Vec<String>) {
     // nodes をたどる → type の String を見る → 同 index の prop を見る → props の中身を一個ずつキューに入れる → キューの先頭から処理
-    let nodes = &ast.nodes;
-    let props = &ast.properties;
+    let nodes = ast.nodes;
+    let props = ast.properties;
 
     let mut q: VecDeque<usize> = VecDeque::new();
 
@@ -34,12 +34,13 @@ fn process_node(ast: &Ast, log_queue: &mut Vec<String>) {
     while let Some(index) = q.pop_front() {
         log_queue.push(format!("{:?}", props[index].clone()));
 
-        let child = nodes[index * NODE_ELE_COUNT + CHILD_COORD];
+        let base = index * NODE_ELE_COUNT;
+        let child = nodes[base + CHILD_COORD];
         if child != 0 {
             q.push_back(child);
         }
 
-        let next = nodes[index * NODE_ELE_COUNT + NEXT_COORD];
+        let next = nodes[base + NEXT_COORD];
         if next != 0 {
             q.push_back(next);
         }
