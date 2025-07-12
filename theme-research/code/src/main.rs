@@ -31,6 +31,9 @@ fn flatten_bfs(source_text: &'static str) {
     let json_asts = serde_json::to_string_pretty(&asts[0]).unwrap();
     println!("{:?}", json_asts);
 
-    let elapsed = elapsed::bfs_flatten_ast(asts);
+    let elapsed = elapsed::bfs_flatten_ast(&asts);
     println!("Flatten AST 実行時間: {:?}", elapsed);
+
+    let footprints = footprints::bfs_flatten_ast(asts);
+    println!("Flatten AST Footprints: {:?}", footprints);
 }
