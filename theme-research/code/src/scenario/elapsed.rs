@@ -10,10 +10,10 @@ pub fn bfs_pure_ast(asts: Vec<pure_ast::AstNode>) -> Duration {
     return elapsed;
 }
 
-pub fn bfs_flatten_ast(ast: Vec<flatten_ast::Ast>) -> Duration {
+pub fn bfs_flatten_ast(ast: flatten_ast::Ast) -> Duration {
     let log_queue: &mut Vec<String> = &mut vec![];
     let pure_fnc_time = Instant::now();
-    flatten_ast::bfs(ast, log_queue);
+    flatten_ast::bfs(&ast, log_queue);
     let elapsed = pure_fnc_time.elapsed();
 
     return elapsed;

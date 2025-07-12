@@ -7,9 +7,9 @@ pub fn bfs_pure_ast(asts: Vec<pure_ast::AstNode>) -> Vec<String> {
     return log_queue.to_vec();
 }
 
-pub fn bfs_flatten_ast(ast: Vec<flatten_ast::Ast>) -> Vec<String> {
+pub fn bfs_flatten_ast(ast: flatten_ast::Ast) -> Vec<String> {
     let log_queue: &mut Vec<String> = &mut vec![];
-    flatten_ast::bfs(ast, log_queue);
+    flatten_ast::bfs(&ast, log_queue);
 
     return log_queue.to_vec();
 }

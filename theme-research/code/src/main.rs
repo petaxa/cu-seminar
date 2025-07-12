@@ -45,7 +45,7 @@ fn pure_bfs(source_text: &'static str, is_elasped: bool, is_footprints: bool) {
 
 fn flatten_bfs(source_text: &'static str, is_elasped: bool, is_footprints: bool) {
     println!("BFS Flatten AST");
-    let asts: Vec<flatten_ast::Ast> = flatten_ast::parse(source_text);
+    let asts: flatten_ast::Ast = flatten_ast::parse(source_text);
 
     if is_elasped {
         let elapsed = elapsed::bfs_flatten_ast(asts.clone());
