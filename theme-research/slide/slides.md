@@ -87,6 +87,8 @@ AST構造をフラット（平坦）な配列に変換する手法
 
 - 木構造をフラットな配列形式に変換
 - 親子関係はインデックス番号で表現
+  - 子のインデックス番号、兄弟のインデックス番号、親のインデックス番号を持つ
+  - → n個目のノードのインデックス番号は`n*4`で求まる
 - 走査効率の向上が期待できる
 
 ```js
@@ -106,7 +108,7 @@ const ast = {
 同一のソースコードから生成したAST（通常・フラット化）に対して、同じ探索経路をたどる
 
 余裕があったら...
-なるべく大きなAST(例えばchecker.tsなど)で実験を行いたい
+なるべく大きなコード(例えばTSのchecker.tsなど)のASTで実験を行いたい
 
 ---
 layout: two-cols-header
@@ -163,7 +165,7 @@ layout: two-cols-header
 - メモリ使用効率の比較
 
 ## 手法
-- `std::mem::size_of_val`を使用
+- `std::mem::size_of_val`を再帰的に使用
 - 実際のメモリ配置を考慮した計測
 
 </div>
@@ -173,22 +175,10 @@ layout: two-cols-header
 ```rust
 use std::mem::size_of_val;
 
-fn measure_memory_usage(ast: &Ast) -> usize {
+fn analyze_ast_memory(ast: &Ast) -> usize {
     size_of_val(ast)
 }
 
-// 構造体設計の例
-struct NormalAst {
-    node_type: NodeType,
-    children: Vec<NormalAst>,
-    // ...
-}
-
-struct FlatAst {
-    nodes: Vec<u32>,
-    properties: Vec<Property>,
-    // ...
-}
 ```
 
 ---
@@ -238,25 +228,25 @@ static ALLOCATOR: CountingAllocator =
 
 ---
 
-# 得られた結果
+# 得られた結果 -走査処理の総実行時間
 
 ## 実行時間の比較（5回測定）
 
 | 実行回数 | 通常AST | フラットAST |
 |--------|---------|-----------|
-| <span class="text-xs">1回目</span> | <span class="text-xs">1269.1μs</span> | <span class="text-xs">840.0μs</span> |
-| <span class="text-xs">2回目</span> | <span class="text-xs">1603.1μs</span> | <span class="text-xs">984.7μs</span> |
-| <span class="text-xs">3回目</span> | <span class="text-xs">1738.5μs</span> | <span class="text-xs">796.4μs</span> |
-| <span class="text-xs">4回目</span> | <span class="text-xs">1064.3μs</span> | <span class="text-xs">922.2μs</span> |
-| <span class="text-xs">5回目</span> | <span class="text-xs">1862.9μs</span> | <span class="text-xs">687.0μs</span> |
-| **平均** | **1530.2μs** | **846.1μs** |
+| <span class="text-xs">1回目</span> | <span class="text-xs">28.2µs</span> | <span class="text-xs">31.4µs</span> |
+| <span class="text-xs">2回目</span> | <span class="text-xs">53.9µs</span> | <span class="text-xs">20.9µs</span> |
+| <span class="text-xs">3回目</span> | <span class="text-xs">22.4µs</span> | <span class="text-xs">19.5µs</span> |
+| <span class="text-xs">4回目</span> | <span class="text-xs">25.8µs</span> | <span class="text-xs">22.1µs</span> |
+| <span class="text-xs">5回目</span> | <span class="text-xs">26.3µs</span> | <span class="text-xs">29.2µs</span> |
+| **平均** | **31.32µs** | **24.62µs** |
 
 ※ Release Profile（cargo run --release）での実行結果
 ※ 現在のソースコードでの結果
 
 ---
 
-# 得られた結果
+# 得られた結果 -走査処理の総実行時間
 
 ## 実行時間の比較（5回測定）
 
@@ -266,24 +256,14 @@ static ALLOCATOR: CountingAllocator =
 
 <div class="mt-10">
 
-<p class="text-6xl text-center">約45%向上</p>
+<p class="text-6xl text-center">約21%向上</p>
 
 </div>
 ---
 
 # 考察: パフォーマンス向上の理由
 
-## 1. メモリ局所性の向上
-- 連続したメモリ領域によるキャッシュヒット率の向上
-- 木構造の飛び飛びなメモリアクセスの解消
-
-## 2. ポインタ走査の削減
-- ポインタの解決回数が減少
-- アドレス計算の簡略化
-
-## 3. オブジェクト生成コストの削減
-- アロケーション回数の大幅削減
-- GC（ガベージコレクション）負荷の軽減
+- 「キューにpush」が「ポインタへのアクセス」に置き換わったから
 
 ---
 
