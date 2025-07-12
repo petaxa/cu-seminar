@@ -16,8 +16,8 @@ pub fn bfs(root: QueueItem, log_queue: &mut Vec<String>) {
                 process_node(*node, &mut queue, log_queue);
             }
             QueueItem::Multiple(nodes) => {
-                for (index, node) in nodes.into_iter().enumerate() {
-                    log_queue.push(format!("touch node[{}]", index));
+                for node in nodes {
+                    log_queue.push(format!("{:?}", node));
                     process_node(node, &mut queue, log_queue);
                 }
             }
@@ -31,51 +31,47 @@ fn process_node(node: AstNode, queue: &mut VecDeque<QueueItem>, log_queue: &mut 
             test,
             consequent,
             alternate,
-            ..
         } => {
-            log_queue.push("touch test".to_string());
+            log_queue.push(format!("{:?}", test));
             queue.push_back(QueueItem::Single(test));
 
-            log_queue.push("touch consequent".to_string());
+            log_queue.push(format!("{:?}", consequent));
             queue.push_back(QueueItem::Single(consequent));
 
-            log_queue.push("touch alternate".to_string());
+            log_queue.push(format!("{:?}", alternate));
             if let Some(alt) = alternate {
                 queue.push_back(QueueItem::Single(alt));
             }
         }
 
         AstNode::BlockStatement { stmts, .. } => {
-            log_queue.push("touch stmts".to_string());
+            log_queue.push(format!("{:?}", stmts));
             queue.push_back(QueueItem::Multiple(stmts));
         }
 
-        AstNode::ExpressionStatement { expression, .. } => {
-            log_queue.push("touch expression".to_string());
+        AstNode::ExpressionStatement { expression } => {
+            log_queue.push(format!("{:?}", expression));
             queue.push_back(QueueItem::Single(expression));
         }
 
         AstNode::CallExpression {
             callee,
             arguments,
-            type_arguments,
+            type_arguments: _,
             ..
         } => {
-            log_queue.push("touch callee".to_string());
+            log_queue.push(format!("{:?}", callee));
             queue.push_back(QueueItem::Single(callee));
 
-            log_queue.push("touch arguments".to_string());
+            log_queue.push(format!("{:?}", arguments));
             queue.push_back(QueueItem::Multiple(arguments));
-
-            log_queue.push(format!("touch type_arguments: {:?}", type_arguments));
         }
 
         AstNode::Identifier {
-            value, optional, ..
-        } => {
-            log_queue.push(format!("touch value: {}", value));
-            log_queue.push(format!("touch optional: {}", optional));
-        }
+            value: _,
+            optional: _,
+            ..
+        } => {}
     }
 }
 

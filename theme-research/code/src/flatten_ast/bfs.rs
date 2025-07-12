@@ -7,9 +7,12 @@ const NODE_ELE_COUNT: usize = 4;
 const CHILD_COORD: usize = 1;
 const NEXT_COORD: usize = 2;
 
-pub fn bfs(ast: &Ast, _log_queue: &mut Vec<String>) {
+pub fn bfs(ast: &Ast, log_queue: &mut Vec<String>) {
     let nodes = &ast.nodes;
+    let props = &ast.properties;
     let mut q = VecDeque::new();
+
+    log_queue.push(format!("{:?}", props[ROOT_NODE_INDEX].clone()));
 
     let root_child = nodes[ROOT_NODE_INDEX * NODE_ELE_COUNT + CHILD_COORD];
     if root_child != 0 {
@@ -22,6 +25,8 @@ pub fn bfs(ast: &Ast, _log_queue: &mut Vec<String>) {
     }
 
     while let Some(index) = q.pop_front() {
+        log_queue.push(format!("{:?}", props[index].clone()));
+
         let base = index * NODE_ELE_COUNT;
 
         let child = nodes[base + CHILD_COORD];
