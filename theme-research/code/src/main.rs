@@ -20,7 +20,7 @@ fn pure_bfs(source_text: &'static str) {
     let elapsed = elapsed::bfs_pure_ast(&asts);
     println!("Pure AST 実行時間: {:?}", elapsed);
 
-    let footprints = footprints::bfs_pure_ast(asts);
+    let footprints = footprints::bfs_pure_ast(&asts);
     println!("Pure AST Footprints: {:?}", footprints);
 }
 
@@ -34,6 +34,6 @@ fn flatten_bfs(source_text: &'static str) {
     let elapsed = elapsed::bfs_flatten_ast(&asts);
     println!("Flatten AST 実行時間: {:?}", elapsed);
 
-    let footprints = footprints::bfs_flatten_ast(asts);
+    let footprints = footprints::bfs_flatten_ast(&asts);
     println!("Flatten AST Footprints: {:?}", footprints);
 }
