@@ -1,31 +1,31 @@
 use super::ast_struct::AstNode;
 use std::collections::VecDeque;
 
-pub enum QueueItem {
-    Single(Box<AstNode>),
-    Multiple(Vec<AstNode>),
+pub enum QueueItem<'a> {
+    Single(&'a AstNode),
+    Multiple(&'a Vec<AstNode>),
 }
 
-pub fn bfs(root: QueueItem) {
+pub fn bfs(root: QueueItem, log_queue: &mut Vec<String>) {
     let mut queue: VecDeque<QueueItem> = VecDeque::new();
     queue.push_back(root);
 
     while let Some(item) = queue.pop_front() {
         match item {
             QueueItem::Single(node) => {
-                process_node(*node, &mut queue);
+                process_node(node, &mut queue, log_queue);
             }
             QueueItem::Multiple(nodes) => {
                 for (index, node) in nodes.into_iter().enumerate() {
-                    println!("touch node[{}]", index);
-                    process_node(node, &mut queue);
+                    log_queue.push(format!("touch node[{}]", index));
+                    process_node(node, &mut queue, log_queue);
                 }
             }
         }
     }
 }
 
-fn process_node(node: AstNode, queue: &mut VecDeque<QueueItem>) {
+fn process_node<'a>(node: &'a AstNode, queue: &mut VecDeque<QueueItem<'a>>, log_queue: &mut Vec<String>) {
     match node {
         AstNode::IfStatement {
             test,
@@ -33,25 +33,25 @@ fn process_node(node: AstNode, queue: &mut VecDeque<QueueItem>) {
             alternate,
             ..
         } => {
-            println!("touch test");
+            log_queue.push("touch test".to_string());
             queue.push_back(QueueItem::Single(test));
 
-            println!("touch consequent");
+            log_queue.push("touch consequent".to_string());
             queue.push_back(QueueItem::Single(consequent));
 
-            println!("touch alternate");
+            log_queue.push("touch alternate".to_string());
             if let Some(alt) = alternate {
                 queue.push_back(QueueItem::Single(alt));
             }
         }
 
         AstNode::BlockStatement { stmts, .. } => {
-            println!("touch stmts");
+            log_queue.push("touch stmts".to_string());
             queue.push_back(QueueItem::Multiple(stmts));
         }
 
         AstNode::ExpressionStatement { expression, .. } => {
-            println!("touch expression");
+            log_queue.push("touch expression".to_string());
             queue.push_back(QueueItem::Single(expression));
         }
 
@@ -61,20 +61,20 @@ fn process_node(node: AstNode, queue: &mut VecDeque<QueueItem>) {
             type_arguments,
             ..
         } => {
-            println!("touch callee");
+            log_queue.push("touch callee".to_string());
             queue.push_back(QueueItem::Single(callee));
 
-            println!("touch arguments");
+            log_queue.push("touch arguments".to_string());
             queue.push_back(QueueItem::Multiple(arguments));
 
-            println!("touch type_arguments: {:?}", type_arguments);
+            log_queue.push(format!("touch type_arguments: {:?}", type_arguments));
         }
 
         AstNode::Identifier {
             value, optional, ..
         } => {
-            println!("touch value: {}", value);
-            println!("touch optional: {}", optional);
+            log_queue.push(format!("touch value: {}", value));
+            log_queue.push(format!("touch optional: {}", optional));
         }
     }
 }
@@ -88,40 +88,25 @@ mod tests {
     fn bfs_ast_base() {
         let source_text = "if(condition) { foo(); }";
         let asts: Vec<AstNode> = parse(source_text);
+        let mut log_queue = Vec::new();
+        bfs(QueueItem::Multiple(&asts), &mut log_queue);
 
-        // タッチ順を示す
-        // cargo test bfs_ast_base -- --nocapture を実行して目視で確認(TODO: 自動化)
-        // レベル 0 (ルート)
-        // - root[0]
-
-        // レベル 1 (IfStatement の直接の子)
-        // - root[0].test
-        // - root[0].consequent
-        // - root[0].alternate
-
-        // レベル 2 (レベル1の子ノード)
-        // - root[0].test.ctxt
-        // - root[0].test.value
-        // - root[0].test.optional
-        // - root[0].consequent.ctxt
-        // - root[0].consequent.stmts
-
-        // レベル 3 (レベル2の子ノード)
-        // - root[0].consequent.stmts[0]
-
-        // レベル 4 (レベル3の子ノード)
-        // - root[0].consequent.stmts[0].expression
-
-        // レベル 5 (レベル4の子ノード)
-        // - root[0].consequent.stmts[0].expression.ctxt
-        // - root[0].consequent.stmts[0].expression.callee
-        // - root[0].consequent.stmts[0].expression.arguments
-        // - root[0].consequent.stmts[0].expression.type_arguments
-
-        // レベル 6 (レベル5の子ノード)
-        // - root[0].consequent.stmts[0].expression.callee.ctxt
-        // - root[0].consequent.stmts[0].expression.callee.value
-        // - root[0].consequent.stmts[0].expression.callee.optional
-        bfs(QueueItem::Multiple(asts));
+        let expected = vec![
+            "touch node[0]",
+            "touch test",
+            "touch consequent",
+            "touch alternate",
+            "touch value: condition",
+            "touch optional: false",
+            "touch stmts",
+            "touch node[0]",
+            "touch expression",
+            "touch callee",
+            "touch arguments",
+            "touch type_arguments: None",
+            "touch value: foo",
+            "touch optional: false",
+        ];
+        assert_eq!(expected, log_queue);
     }
 }

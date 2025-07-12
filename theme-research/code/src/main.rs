@@ -3,6 +3,7 @@ mod pure_ast;
 mod scenario;
 mod utils;
 use scenario::elapsed;
+use scenario::footprints;
 
 fn main() {
     let source_text = "if(condition) { foo(); }";
@@ -16,11 +17,11 @@ fn pure_bfs(source_text: &'static str) {
     println!("BFS Pure AST");
     let asts: Vec<pure_ast::AstNode> = pure_ast::parse(source_text);
 
-    let json_asts = serde_json::to_string_pretty(&asts[0]).unwrap();
-    println!("{:?}", json_asts);
-
-    let elapsed = elapsed::bfs_pure_ast(asts);
+    let elapsed = elapsed::bfs_pure_ast(&asts);
     println!("Pure AST 実行時間: {:?}", elapsed);
+
+    let footprints = footprints::bfs_pure_ast(asts);
+    println!("Pure AST Footprints: {:?}", footprints);
 }
 
 fn flatten_bfs(source_text: &'static str) {
