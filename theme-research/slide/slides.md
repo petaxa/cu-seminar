@@ -234,12 +234,12 @@ static ALLOCATOR: CountingAllocator =
 
 | 実行回数 | 通常AST | フラットAST |
 |--------|---------|-----------|
-| <span class="text-xs">1回目</span> | <span class="text-xs">28.2µs</span> | <span class="text-xs">31.4µs</span> |
-| <span class="text-xs">2回目</span> | <span class="text-xs">53.9µs</span> | <span class="text-xs">20.9µs</span> |
-| <span class="text-xs">3回目</span> | <span class="text-xs">22.4µs</span> | <span class="text-xs">19.5µs</span> |
-| <span class="text-xs">4回目</span> | <span class="text-xs">25.8µs</span> | <span class="text-xs">22.1µs</span> |
-| <span class="text-xs">5回目</span> | <span class="text-xs">26.3µs</span> | <span class="text-xs">29.2µs</span> |
-| **平均** | **31.32µs** | **24.62µs** |
+| <span class="text-xs">1回目</span> | <span class="text-xs">45.9µs</span> | <span class="text-xs"> 8.9µs </span> |
+| <span class="text-xs">2回目</span> | <span class="text-xs">27.0µs</span> | <span class="text-xs">10.0µs</span> |
+| <span class="text-xs">3回目</span> | <span class="text-xs">25.0µs</span> | <span class="text-xs"> 8.8µs</span> |
+| <span class="text-xs">4回目</span> | <span class="text-xs">25.3µs</span> | <span class="text-xs"> 8.7µs</span> |
+| <span class="text-xs">5回目</span> | <span class="text-xs">26.0µs</span> | <span class="text-xs">13.9µs</span> |
+| **平均** | **29.84µs** | **10.06µs** |
 
 ※ Release Profile（cargo run --release）での実行結果
 ※ 現在のソースコードでの結果
@@ -252,11 +252,11 @@ static ALLOCATOR: CountingAllocator =
 
 | 実行回数 | 通常AST | フラットAST |
 |--------|---------|-----------|
-| **平均** | **1530.2μs** | **846.1μs** |
+| **平均** | **29.84µs** | **10.06µs** |
 
 <div class="mt-10">
 
-<p class="text-6xl text-center">約21%向上</p>
+<p class="text-6xl text-center">約66%向上</p>
 
 </div>
 ---
