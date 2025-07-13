@@ -32,11 +32,8 @@ const props = defineProps({
     <div class="col-header">
       <slot />
     </div>
-    <div class="col-left" :class="props.class">
-      <slot name="left" />
-    </div>
-    <div class="col-right" :class="props.class">
-      <slot name="right" />
+    <div class="col-body">
+      <slot name="body" />
     </div>
     <div class="col-bottom" :class="props.class">
       <slot name="bottom" />
@@ -47,7 +44,6 @@ const props = defineProps({
 <style scoped>
 .two-cols-header {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   grid-template-rows: auto 1fr 0;
   gap: 1rem;
 }
@@ -56,12 +52,11 @@ const props = defineProps({
   grid-area: 1 / 1 / 2 / 3;
 }
 
-.col-left {
+.col-body {
   grid-area: 2 / 1 / 3 / 2;
-}
-
-.col-right {
-  grid-area: 2 / 2 / 3 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .col-bottom {

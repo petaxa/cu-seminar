@@ -30,17 +30,14 @@ mdc: true
 4. まとめ
 
 ---
-layout: two-cols
+layout: header
 ---
 
 # テーマの説明
 
-::right::
+::body::
 
-<div class="ml-4">
-  <h3>AST（抽象構文木）のフラット化によるパフォーマンスの差異を計測し考察する</h3>
-  <img src="https://mermaid.ink/img/pako:eNptkU9PwzAMxb9KlBOI9QPkBBpDQmxo0_6oEodcG9poS5wpcYfG0HdHaVkn4JT4vZ_fk5MLqs4J5ugbRr8DXO_rzp9pxJItedVURmvrkGFA7yQl9B3YQC6eZSUiGLDKaXCbiEck2ErDCiFdYOzFYG2UsB3ShN8wcNHSysIwgQ8WE3yQ9ZqeX3EEMUahZ47thml-NFJUiysRZYPmHa1HFDgXWD0w-Yv9e7q3wuvs_d_6K8aJXpCDZIbWF3rtPFscJOtxCW4fTpd69g1609dZzmnTFPB9yTRF0efeHNAaXMjZMsxQthoyfGLYm0ZlOJdYixPQwZJzqFTuO9sLXKHvJEsvn97R_jCkP2lzgP8" alt="ASTとフラット化のイメージ図" />
-</div>
+<p class="text-[1.3em]">AST（抽象構文木）のフラット化によるパフォーマンスの差異を計測し考察する</p>
 
 ---
 
@@ -101,14 +98,20 @@ const ast = {
 ```
 
 ---
+layout: header
+---
 
 # 研究内容の詳細
 
-フラット化前のAST構造とフラット化後のAST構造について、同一の探索アルゴリズムを用いて性能比較を行う
-同一のソースコードから生成したAST（通常・フラット化）に対して、同じ探索経路をたどる
+::body::
 
-余裕があったら...
-なるべく大きなコード(例えばTSのchecker.tsなど)のASTで実験を行いたい
+- フラット化前のAST構造とフラット化後のAST構造について、<span class="text-xl font-bold">同一の探索アルゴリズムを用いて性能比較</span>を行う
+  - 同一のソースコードから生成したAST（通常・フラット化）に対して、同じ探索経路をたどる
+
+<div class="mt-10">
+  余裕があったら...<br/>
+  なるべく大きなコード(例えばTSのchecker.tsなど)のASTで実験を行いたい
+</div>
 
 ---
 layout: two-cols-header
@@ -241,8 +244,8 @@ static ALLOCATOR: CountingAllocator =
 | <span class="text-xs">5回目</span> | <span class="text-xs">26.0µs</span> | <span class="text-xs">13.9µs</span> |
 | **平均** | **29.84µs** | **10.06µs** |
 
-※ Release Profile（cargo run --release）での実行結果
-※ 現在のソースコードでの結果
+<p class="text-xs !m-0">※ Release Profile（cargo run --release）での実行結果</p>
+<p class="text-xs !m-0">※ コミットハッシュ<code>a38f4eeb</code>のソースコードでの結果</p>
 
 ---
 
@@ -263,18 +266,28 @@ static ALLOCATOR: CountingAllocator =
 
 # 考察: パフォーマンス向上の理由
 
-- 「キューにpush」が「ポインタへのアクセス」に置き換わったから
+<p class="text-[2em] !mt-20 !mb-10 !opacity-100">メモリアクセスの局所性が高まったから</p>
+
+- pure-AST: 各ノードをヒープメモリ上に個別にアロケート
+  - キャッシュミスが頻発
+- flatten-AST: データをメモリ上で連続的に配置
+  - CPUキャッシュを有効活用
 
 ---
 
 # まとめ
 
-- **検証結果**: ASTのフラット化は走査性能を大幅に向上させる
-- **効果**: メモリ使用効率とデータアクセス効率の両面で改善
-- **応用**: JavaScript/TypeScriptリンターなどのツールチェーン高速化に有効
-- **今後の展望**: より多様なケースでの検証と最適化手法の研究
+- フラット化前のAST構造とフラット化後のAST構造で同一の走査を行って性能を比較
+- 計測項目は3種類
+  - 走査処理の総実行時間
+  - メモリ使用量
+  - アロケーション回数
+- 走査処理の総実行時間は約66%向上した
+- 理由はメモリアクセスの局所性が高まったからだと考えられる
+
+---
 
 ## 参考文献
 
-- Marvin Hagemeister. "Speeding up the JavaScript ecosystem - Rust and JavaScript Plugins". marvinh.dev. 2025
-- Shiisaa Moriai. "Rustのメモリアロケーションをちょっとだけ掘ってみた". Qiita. 2020
+- Marvin Hagemeister. "Speeding up the JavaScript ecosystem - Rust and JavaScript Plugins". marvinh.dev. 2025. https://marvinh.dev/blog/speeding-up-javascript-ecosystem-part-11/. (参照 2025-06-24)
+- Shiisaa Moriai. "Rustのメモリアロケーションをちょっとだけ掘ってみた". Qiita. 2020. https://qiita.com/moriai/items/4e2ec2d9c3b352394ef3. (参照 2025-07-03)
