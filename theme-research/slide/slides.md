@@ -154,40 +154,6 @@ fn measure_traverse_time(ast: &Ast) -> Duration {
 layout: two-cols-header
 ---
 
-# 計測項目: メモリ使用量
-
-::left::
-
-<div class="ml-0">
-
-## 計測対象
-- 各AST構造のメモリ消費量
-
-## 理由
-- データ構造の効率性評価
-- メモリ使用効率の比較
-
-## 手法
-- `std::mem::size_of_val`を再帰的に使用
-- 実際のメモリ配置を考慮した計測
-
-</div>
-
-::right::
-
-```rust
-use std::mem::size_of_val;
-
-fn analyze_ast_memory(ast: &Ast) -> usize {
-    size_of_val(ast)
-}
-
-```
-
----
-layout: two-cols-header
----
-
 # 計測項目: アロケーション回数
 
 ::left::
