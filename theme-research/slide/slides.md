@@ -12,13 +12,11 @@ transition: slide-left
 mdc: true
 ---
 
-# ASTのフラット化によるパフォーマンスの差異と考察
+# テーマ研究: 研究発表
 
-テーマ研究発表
+## ASTのフラット化による探索パフォーマンスの差異とその考察
 
-<div class="abs-br m-6 flex gap-2">
-  <span>2025年7月21日</span>
-</div>
+<p class="!opacity-100 !mt-10">学籍番号: 2101105460 <span class="text-xl">市村 悠馬</span></p>
 
 ---
 
@@ -37,33 +35,30 @@ layout: header
 
 ::body::
 
-<p class="text-[1.3em]">AST（抽象構文木）のフラット化によるパフォーマンスの差異を計測し考察する</p>
+<p class="text-[1.3em]">AST（抽象構文木）のフラット化による探索パフォーマンスの差異を計測し考察する</p>
+
+---
+layout: header
+---
+
+# 背景説明
+
+::body::
+
+<span class="text-[1.8rem] font-bold">Rust製JavaScriptツールチェインであるdeno_lintで実際に行われているパフォーマンスチューニングの手法</span>
 
 ---
 
 # 背景説明
 
-## linterとは
+## AST(抽象構文木)とは
 
-- コードの品質チェックや問題検出を行うツール
-- 構文エラー、潜在的バグ、スタイル違反などを発見
-- 例: ESLint, TSLint
+- プログラムコードを木構造で表したもの
+- 静的な解析はこの木を読むことで行う
 
-## Rust製ツールチェイン
-
-- 高速で安全なlinterの実装が可能
-- 例: deno_lint (DenoのJavaScript/TypeScriptリンター)
-
----
-
-# Rust製ツールチェインでJSプラグインを提供する課題
-
-- Rust側とJavaScript側でデータをやり取りする必要がある
-- 特にAST（抽象構文木）の受け渡しが課題
-- デシリアライズのオーバーヘッドが大きい
+`if(condition) { foo(); }`
 
 ```js
-// 一般的なAST構造（入れ子になっている）
 const ast = {
   type: "IfStatement",
   test: { type: "Identifier", value: "condition", optional: false },
@@ -78,6 +73,14 @@ const ast = {
 
 ---
 
+# 背景説明
+
+- deno_lintではJSプラグインでの拡張を提供しているため、RustとJSの間でASTをやり取りしなければならない
+- デシリアライズのオーバーヘッドが大きくて時間がかかる
+- → 「フラット化」によってそれを解消する
+
+---
+
 # フラット化とは
 
 AST構造をフラット（平坦）な配列に変換する手法
@@ -87,6 +90,33 @@ AST構造をフラット（平坦）な配列に変換する手法
   - 子のインデックス番号、兄弟のインデックス番号、親のインデックス番号を持つ
   - → n個目のノードのインデックス番号は`n * 4`で求まる
 - 走査効率の向上が期待できる
+
+---
+layout: two-cols-header
+---
+
+# フラット化とは
+
+::left::
+
+## Pure-AST
+
+```js
+const ast = {
+  type: "IfStatement",
+  test: { type: "Identifier", value: "condition", optional: false },
+  consequent: {
+    type: "BlockStatement",
+    stmts: [
+      { type: "ExpressionStatement", expression: { /*...*/ } }
+    ]
+  }
+};
+```
+
+::right::
+
+## Flatten-AST
 
 ```js
 // フラット化されたAST（配列とインデックスで関係性を表現）
@@ -244,12 +274,11 @@ static ALLOCATOR: CountingAllocator =
 # まとめ
 
 - フラット化前のAST構造とフラット化後のAST構造で同一の走査を行って性能を比較
-- 計測項目は3種類
+- 計測項目は2種類
   - 走査処理の総実行時間
-  - メモリ使用量
   - アロケーション回数
 - 走査処理の総実行時間は約66%向上した
-- 理由はメモリアクセスの局所性が高まったからだと考えられる
+  - 理由はメモリアクセスの局所性が高まったからだと考えられる
 
 ---
 
